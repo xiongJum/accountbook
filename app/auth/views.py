@@ -2,13 +2,27 @@ from flask import render_template, redirect, request, url_for, flash
 from flask_login import login_user
 from . import auth
 from .. models import User
-from .forms import LoginForm
+from .forms import LoginForm, RegistrationForm
+from .. import db
+
+@auth.route('/register', methods=['GET', 'POST'])
+def register(): # 注册路由
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(email=form.email.data,
+                    username=form.username.data,
+                    password=form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('现在可以登录了。')
+        return redirect(url_for('auth.login'))
+    return render_template('auth/register.html', form=form)
 
 """当请求参数为 GET 时，视图函数会直接渲染模板，即显示登录表单。
 当为 POST 时，validate_on_submit() 函数会验证表单数据，然后尝试登入用户。
 """
 @auth.route('/login', methods=['GET', 'POST'])
-def login():
+def login(): # 登录路由
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -30,8 +44,7 @@ from flask_login import logout_user, login_required
 
 @auth.route('/logout')
 @login_required
-def logout():
+def logout(): # 退出登录路由
     logout_user()
-    flash('You have been logged out.')
+    flash('您已注销登录。')
     return redirect(url_for('.login'))
-
