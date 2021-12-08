@@ -2,7 +2,7 @@ from flask import render_template, redirect, request, url_for, flash
 from flask_login import login_user
 from . import auth
 from .. models import User
-from .form import LoginForm
+from .forms import LoginForm
 
 """当请求参数为 GET 时，视图函数会直接渲染模板，即显示登录表单。
 当为 POST 时，validate_on_submit() 函数会验证表单数据，然后尝试登入用户。
@@ -25,4 +25,13 @@ def login():
     # 为 render_template() 指定的模板文件保存在 auth 目录中。
     # 这个目录必须在 app/ templates 中创建。
     return render_template('auth/login.html', form=form)
+
+from flask_login import logout_user, login_required
+
+@auth.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out.')
+    return redirect(url_for('.login'))
 
