@@ -10,14 +10,14 @@ class BillForm(FlaskForm):
     """
     accounting_time = DateField('记账日期')
     payment_method = SelectField('支付方式',choices=[
-                                                ('aliPay', '支付宝'), 
+                                                ('AliPay', '支付宝'), 
                                                 ('WeChat', '微信'), 
                                                 ('CMBC', '招商银行'), 
                                                 ('Ant Credit Pay', '花呗')
                                                 ])
     direction = SelectField('发生方向', choices=[
-                                            ('Pay', '支出'), 
-                                            ('income', '收入')
+                                            ('PAY', '支出'), 
+                                            ('INCOME', '收入')
                                             ])
     amount = FloatField('金额', default = '0.00')
     category = SelectField('分类',choices=[
