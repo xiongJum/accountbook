@@ -1,4 +1,4 @@
-from flask import render_template, redirect, request, url_for, flash
+from flask import render_template, redirect, request, url_for, flash, session
 from flask_login import login_user
 from . import auth
 from .. models import User
@@ -26,13 +26,14 @@ def login(): # 登录路由
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
+        print(user)
         if user is not None and user.verify_password(form.password.data):
             '''调用 Flask-Login 的 login_user() 函数，在用户会话中把用户标记为已登录。
             若 remember_me 的值等于 True 则在用户的浏览器中写入一个长期有效的 cookie， 使用这个 cookie 可以恢复用户会话，cookie 默认记住为一年，可以使用可选的 REMEMBER_COOKIE_DURATION 配置选项更改这个值。
             '''
             login_user(user, form.remember_me.data) 
             next = request.args.get('next')
-            if next is None or not next.startswitch('/'):
+            if next is None or not next.startswith('/'):
                 next = url_for('main.index')
             return redirect(next)
         flash('无效的用户名或者密码')
