@@ -11,23 +11,38 @@
     <title>账单</title>
   </head>
   <body>
-
-    <table class="table table-hover table-bordered">
-      <tbody>
-      {% for i in content %}
-        <tr>
-              <th scope="row">{{ loop.index }}</th>
-              {% for j in i %}
-                  {% if j == 'PAY' %}
-                    <td>支出</td>
-                  {% else %}
-                    <td>{{ j }}</td>
-                  {% endif %}
-              {% endfor %}
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
+    <div class="container">
+      <table class="table table-hover table-bordered" style="word-wrap:break-word">
+        <thead>
+          <tr>
+            {% for i in labels %}
+              <td>{{ i }}</td>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+        {% for i in bills %}
+          <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <th scope="row">{{ i.accounting_time }}</th>
+            <th scope="row">{{ i.payment_method }}</th>
+            {% if i.direction == 'PAY' %}
+              <th scope="row">支付</th>
+            {% elif i.direction == 'INCOME' %}
+              <th scope="row">收入</th>
+            {% endif %}
+            <th scope="row">{{ i.amount }}</th>
+            <th scope="row">{{ i.category }}</th>
+            <th scope="row">{{ i.remark }}</th>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div>
+      {% import 'pages.html' as pg %}
+        {{ pg.my_paginate(pagination, '.bill_form')}}
+    </div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

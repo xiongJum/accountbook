@@ -54,7 +54,7 @@ class Bill(db.Model):
     creation_time = db.Column(db.DateTime(), default=datetime.utcnow()) # 创建时间
 
     def __repr__(self):
-        return '<Bill %r>' % self.id
+        return '<Bill %r>' % self.users
 
 @login_manger.user_loader
 def load_user(user_id):

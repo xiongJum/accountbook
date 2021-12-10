@@ -41,17 +41,13 @@ def index(): # 记账
         return redirect(url_for('.index'))
 
     return render_template('index.html', form=form)
-@main.route('/bill', methods=['GET'])
-def bill_form():
-    conn = sqlite3.connect(current_app.config.get('SQLALCHEMY_DATABASE_URI')[10:])
-    sql = '''SELECT accounting_time, payment_method, direction, amount, category, remark 
-             FROM employes
-             ORDER BY datetime(accounting_time) ;
-            '''
-    cursor = conn.execute(sql)
-    content = cursor.fetchall()
-    # labels = [l[0] for l in labels]
-    return render_template('bill.html', content=content)
+@main.route('/bill/list/<int:page>', methods=['GET'])
+def bill_form(page=None):
+    if not page:
+        page = 1
+    bills = Bill.query.filter_by().order_by(Bill.payment_method.desc()).paginate(page=page, per_page=10)
+    labels = ['序号', '记账日期', '支付方式', '发生方向', '金额', '分类', '备注']
+    return render_template('bill.html', bills=bills.items, pagination=bills, labels=labels)
 
     
 

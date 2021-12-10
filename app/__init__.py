@@ -1,4 +1,5 @@
 from flask import Flask, render_template
+from flask.helpers import url_for
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_mail import Mail
