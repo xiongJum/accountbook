@@ -21,7 +21,8 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">熊小酒记账</a>
+            <a class="navbar-brand" href="/">视图</a>
+            <a class="navbar-brand" href="{{ url_for('bill.account') }}">记账</a>
         </div>
         <ul class="nav navbar-nav navbar-right">
             {% if current_user.is_authenticated %}
