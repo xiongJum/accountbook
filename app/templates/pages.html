@@ -1,7 +1,15 @@
 {% macro my_paginate(pagination,url) %}
 
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-end">
+<style type="text/css">  
+
+  #position{   
+      position:fixed;     
+      top:90%;   
+  } 
+</style>  
+
+<nav aria-label="Page navigation example" id="position">
+    <ul class="pagination justify-content-center">
       {% if pagination.has_prev %}
         <li class="page-item active"><a class="page-link"， href="{{ url_for(url,page=pagination.page-1) }}">上一页</a></li>
       {% else %}

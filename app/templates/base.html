@@ -1,6 +1,14 @@
 {% extends "bootstrap/base.html" %}
 
 {% block title %}Xiong`Jum || Explore{% endblock %}
+{% block head %}
+<!--如果要向已有内容的块中添加新内容，必须使用 Jinja2 提供的 super() 函数。-->
+{{ super() }}
+  <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"
+     type="image/x-icon">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}"
+    type="image/x-icon">
+{% endblock %}
 
 {% block navbar %}
 <div class="navbar navbar-inverse" role="navigation">

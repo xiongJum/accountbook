@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block page_content %}
+
+<div class="container ">
+  <table class="table table-hover table-bordered" style="word-wrap:break-word">
+    <thead>
+      <tr>
+        {% for i in labels %}
+          <td>{{ i }}</td>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+    {% for i in bills %}
+      <tr>
+        <th scope="row">{{ loop.index }}</th>
+        <th scope="row">{{ i.accounting_time }}</th>
+        <th scope="row">{{ i.payment_method }}</th>
+        {% if i.direction == 'PAY' %}
+          <th scope="row">支付</th>
+        {% elif i.direction == 'INCOME' %}
+          <th scope="row">收入</th>
+        {% endif %}
+        <th scope="row">{{ i.amount }}</th>
+        <th scope="row">{{ i.category }}</th>
+        <th scope="row">{{ i.remark }}</th>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!--引用分页， 需要参数 SQLAlchemy() 的分页对象pagination，以及地址 url-->
+{% import 'pages.html' as pg %}
+  {{ pg.my_paginate(pagination, 'bill.ledger')}}
+{% endblock %}
+
+ 

@@ -44,6 +44,10 @@ def create_app(config_name):
     # 即 /login 注册为 /auth/login, 完整路径变为 http://localhost/auth/login 
     app.register_blueprint(auth_blueprint, url_prefix='/auth')
 
+    """注册账本蓝本"""
+    from .bill import bill as bill_blueprint
+    app.register_blueprint(bill_blueprint, url_prefix='/bill')
+
     # 添加路由和自定义的错误页面
 
     return app
