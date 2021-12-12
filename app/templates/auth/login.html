@@ -1,9 +1,11 @@
 {% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
+{% from 'bootstrap/form.html' import render_form, render_field  %}
 
 {% block page_content %}
 <div class="page-header">
-    <h1>登录</h1>
+    <h1>
+        <img src="{{ url_for('static', filename='icons/capslock.svg') }}" alt="Bootstrap" width="32" height="32">
+    </h1>
     <p>
         新用户？
         <a href="{{ url_for('auth.register') }}">
@@ -12,7 +14,7 @@
     </p>
 </div>
 <div class="col-md-4">
-    {{ wtf.quick_form(form) }}
+    {{ render_form(form) }}
 </div>
 
 {% endblock %}

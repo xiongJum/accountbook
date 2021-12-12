@@ -5,9 +5,11 @@ from .. import create_app, db
 from ..models import User, Bill
 from flask_login import login_required
 
-@bill.route('/account', methods=['GET', 'POST'])
+
+@bill.route('/account/<int:page>', methods=['GET', "POST"])
+@bill.route("/account",methods = ["GET", "POST"])
 @login_required
-def account(): # 记账
+def account(page=None): # 账本
     form = BillingFrom()
     if form.validate_on_submit():
         bill = Bill(accounting_time=form.accounting_time.data,
@@ -24,16 +26,12 @@ def account(): # 记账
         db.session.commit()
         return redirect(url_for('bill.account'))
 
-    return render_template('bill/account.html', form=form)
-
-@bill.route('/account/book/<int:page>', methods=['GET'])
-@login_required
-def ledger(page=None): # 账本
     if not page:
         page = 1
-    bills = Bill.query.filter_by().order_by(Bill.payment_method.desc()).paginate(page=page, per_page=15)
-    labels = ['序号', '记账日期', '支付方式', '发生方向', '金额', '分类', '备注']
-    return render_template('bill/account_book.html', bills=bills.items, pagination=bills, labels=labels)
+    bills = Bill.query.filter_by().order_by(Bill.accounting_time.desc()).paginate(page=page, per_page=15)
+    labels = ['记账日期', '支付方式', '发生方向', '金额', '分类', '备注']
+    return render_template('bill/account.html', bills=bills.items, 
+                    pagination=bills, labels=labels, form=form)
 
     
 

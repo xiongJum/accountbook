@@ -1,24 +1,36 @@
 {% extends "base.html" %}
 
 {% block page_content %}
-<div class="row">
-    <div class="col-sm-6">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">总支付金额</h5>
-          <p class="card-text">{{ amount[0] }}</p>
-          <a href="#" class="btn btn-primary">查看详情</a>
-        </div>
-      </div>
+
+<div class="card">
+  <div class="card-body">
+    <div class="text-center" style="display: inline-block; width: 500px;">
+      <h5 class="card-title">总支付金额</h5>
+      <p class="card-text">{{ amount['pay'] }}</p>
+      <a href="#" class="btn btn-primary">查看详情</a>
     </div>
-    <div class="col-sm-6">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">总收入金额</h5>
-          <p class="card-text">{{amount[1]}}</p>
-          <a href="#" class="btn btn-primary">查看详情</a>
-        </div>
+    <div class="text-center" style="display: inline-block; width: 500px;">
+      <h5 class="card-title">总收入金额</h5>
+      <p class="card-text">{{ amount['income'] }}</p>
+      <a href="#" class="btn btn-primary">查看详情</a>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-3" style="max-width: 540px; margin-top: 30px;">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <img src="/static/image/test.jpg" style="max-width: 85%;">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">当月支付金额</h5>
+        <p class="card-text">{{ amount['this_month_pay'] }}</p>
+        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
       </div>
     </div>
   </div>
+</div>
+
+
 {% endblock %}

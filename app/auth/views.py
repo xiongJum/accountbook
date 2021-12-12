@@ -39,7 +39,7 @@ def login(): # 登录路由
         flash('无效的用户名或者密码')
     # 为 render_template() 指定的模板文件保存在 auth 目录中。
     # 这个目录必须在 app/ templates 中创建。
-    return render_template('auth/login.html', form=form)
+    return render_template(['auth/login.html', 'base.html'], form=form, is_login_page=True)
 
 from flask_login import logout_user, login_required
 

@@ -33,4 +33,3 @@ class BillingFrom(FlaskForm):
                                     ('Hobby', '爱好')
                                     ])     
     remark = TextAreaField('备注')      
-    submit = SubmitField('记账')
