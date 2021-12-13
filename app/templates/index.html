@@ -1,13 +1,5 @@
 {% extends "base.html" %}
 
-
-<style>
-  .my_card {
-    max-width: 18rem; 
-    margin-top: 30px;
-  }
-</style>
-
 {% macro card_sticky(string_list=[], amount_list=[], class='card', style='', button_class='btn btn-primary', span_class='badge badge-pill badge-danger') %}
 
 
@@ -27,16 +19,26 @@
 
 {% block page_content %}
 
+<style>
+  .my_card {
+    max-width: 18rem; 
+    margin-top: 30px;
+  }
+  .is_margin_left{
+    margin-left: 138px;
+  }
+</style>
+
 <div class="card">
   <div class="card-body">
     <div class="text-center" style="display: inline-block; width: 500px;">
       <h5 class="card-title">总支付金额</h5>
-      <p class="card-text">{{ amount['pay'] }}</p>
+      <p class="card-text">{{ amount['total_amount'][0] }}</p>
       <a href="#" class="btn btn-primary">查看详情</a>
     </div>
     <div class="text-center" style="display: inline-block; width: 500px;">
       <h5 class="card-title">总收入金额</h5>
-      <p class="card-text">{{ amount['income'] }}</p>
+      <p class="card-text">{{ amount['total_amount'][1] }}</p>
       <a href="#" class="btn btn-primary">查看详情</a>
     </div>
   </div>
@@ -44,11 +46,14 @@
 
 <div class="row row-cols-1 row-cols-md-2">
 
-  {{ card_sticky(['当月', '支付金额', '收入金额'], amount['this']['month'], class='card text-white bg-secondary mb-3 my_card') }}
+  {{ card_sticky(['当月', '支付金额', '收入金额'], amount['this']['month'], 
+      class='card text-white bg-secondary mb-3 my_card') }}
 
-  {{ card_sticky(['上月', '支付金额', '收入金额'], amount['this']['month'], class='card text-white bg-secondary mb-3 my_card') }}
+  {{ card_sticky(['上月', '支付金额', '收入金额'], amount['last']['month'], 
+      class='card text-white bg-secondary mb-3 my_card is_margin_left') }}
 
-  {{ card_sticky(['今年', '支付金额', '收入金额'], amount['this']['year'], class='card text-white bg-info mb-3 my_card') }}
+  {{ card_sticky(['今年', '支付金额', '收入金额'], amount['this']['year'], 
+      class='card text-white bg-info mb-3 my_card is_margin_left') }}
 
 </div>
 

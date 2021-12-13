@@ -15,71 +15,60 @@ from datetime import datetime
 def index(): # 数据汇总
     today =  datetime.now()
     
-    # def thisYearAmont(direction='INCOME', year=today.year):
 
-    #     amount = db.session.query(func.sum(Bill.amount)).filter(and_(
-    #         Bill.direction==direction, extract('year', Bill.accounting_time) == year
-    #         )).scalar()
+    def amount_(direction='PAY', is_total_direction=True, year=None, month=None, day=None):
+        search = and_(Bill.direction==direction)
 
-    # def thisMonthAmount(direction='INCOME', month=today.month):
+        if year is not None:
+            search = and_(search, extract('year', Bill.accounting_time) == today.year)
+            if month is not None:
+                search = and_(search, extract('month', Bill.accounting_time) == month)
+                if day is not None:
+                    search = and_(search, extract('day', Bill.accounting_time) == day)
 
-    #     amount = db.session.query(func.sum(Bill.amount)).filter(and_(
-    #         Bill.direction==direction, extract('year', Bill.accounting_time) == today.year,
-    #         extract('month', Bill.accounting_time) == month,
-    #         )).scalar()
-        
-    #     return amount
+        amount = db.session.query(func.sum(Bill.amount)).filter(search).scalar()
+        amount = 0 if amount == None else '%.2f' % amount
 
-    def amount(direction='INCOME', year=today.year, month=None, day=None):
-        search = and_(Bill.direction==direction, extract('year', Bill.accounting_time) == today.year)
-        
-        if month is not None:
-            search = and_(search, extract('month', Bill.accounting_time) == month)
-            if day is not None:
-                search = and_(search, extract('day', Bill.accounting_time) == day)
+        if is_total_direction == True:
+            is_total_direction = [amount]
+            return amount_('INCOME', is_total_direction, year, month, day)
+        elif type(is_total_direction) == list:
+            is_total_direction.append(amount)
+            return is_total_direction
 
-        return db.session.query(func.sum(Bill.amount)).filter(search).scalar()
-
-
-        # amount = db.session.query(func.sum(Bill.amount)).filter(and_(
-        #     Bill.direction==direction, extract('year', Bill.accounting_time) == today.year,
-        #     extract('month', Bill.accounting_time) == today.month,
-        #     extract('day', Bill.accounting_time) == day
-        #     )).scalar()
+        return amount
 
     # 金额
     ## 总金额支出
-    total_pay = db.session.query(func.sum(Bill.amount)).filter(Bill.direction=='PAY').scalar()
-    # sum_amount.append('%.2f' % sum_pay_amount)
-    ## 总金额收入
-    total_income = db.session.query(func.sum(Bill.amount)).filter(Bill.direction=='INCOME').scalar()
+    total_amount = amount_()
 
     ## 今年金额支出和收入
-    this_year_pay = amount('PAY')
-    this_year_income = amount()
+    this_year_amount = amount_(year=today.year)
     
     ## 本月金额支出和收入
-    this_month_pay = amount('PAY', month=today.month)
-    this_month_income = amount(month=today.month)
+    this_month_amount = amount_(year=today.year, month=today.month)
 
     ## 今天金额
-    today_amount_pay = amount('PAY', month=today.month, day=today.day)
-    today_amount_income = amount(month=today.month, day=today.day)
+    today_amount = amount_(year=today.year, month=today.month, day=today.day)
 
     ## 去年金额
-    last_year_pay = amount('PAY', year=today.year-1)
-    last_year_income = amount(year=today.year-1)
+    last_year_amount = amount_(year=today.year-1)
 
     ## 上月金额
+    last_month_amount = amount_(year=today.year-1, month=today.month-1)
 
     ## 全部金额的字典
     amount = {
-        "pay":total_pay, 
-        "income": total_income, 
+        "total_amount": total_amount,
         "this":{
-            "year":[this_year_pay, this_year_income],
-            "month": [this_month_pay, this_month_income]
-        }}
+            "year": this_year_amount,
+            "month": this_month_amount,
+            "day": today_amount,},
+        "last":{
+            "year":last_year_amount,
+            "month":last_month_amount
+        }
+            }
     return render_template('index.html', amount=amount)
 
     
