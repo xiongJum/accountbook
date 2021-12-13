@@ -1,5 +1,30 @@
 {% extends "base.html" %}
 
+
+<style>
+  .my_card {
+    max-width: 18rem; 
+    margin-top: 30px;
+  }
+</style>
+
+{% macro card_sticky(string_list=[], amount_list=[], class='card', style='', button_class='btn btn-primary', span_class='badge badge-pill badge-danger') %}
+
+
+<div class="{{ class }}" >
+  <div class="card-header">{{ string_list[0] }}</div>
+  <div class="card-body">
+    {% for str in string_list[1:] %}
+      <button type="button" class="{{ button_class }}" style="{% if loop.index0 %}margin-top: 25%;{% endif %}">
+        {{ str }} <span class="{{ span_class }}">{{ amount_list[loop.index0] }}</span>
+        <span class="sr-only">unread messages</span>
+      </button>
+    {% endfor %}
+  </div>
+</div>
+
+{% endmacro %}
+
 {% block page_content %}
 
 <div class="card">
@@ -17,20 +42,14 @@
   </div>
 </div>
 
-<div class="card mb-3" style="max-width: 540px; margin-top: 30px;">
-  <div class="row no-gutters">
-    <div class="col-md-4">
-      <img src="/static/image/test.jpg" style="max-width: 85%;">
-    </div>
-    <div class="col-md-8">
-      <div class="card-body">
-        <h5 class="card-title">当月支付金额</h5>
-        <p class="card-text">{{ amount['this_month_pay'] }}</p>
-        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-      </div>
-    </div>
-  </div>
-</div>
+<div class="row row-cols-1 row-cols-md-2">
 
+  {{ card_sticky(['当月', '支付金额', '收入金额'], amount['this']['month'], class='card text-white bg-secondary mb-3 my_card') }}
+
+  {{ card_sticky(['上月', '支付金额', '收入金额'], amount['this']['month'], class='card text-white bg-secondary mb-3 my_card') }}
+
+  {{ card_sticky(['今年', '支付金额', '收入金额'], amount['this']['year'], class='card text-white bg-info mb-3 my_card') }}
+
+</div>
 
 {% endblock %}

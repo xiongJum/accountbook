@@ -13,11 +13,13 @@
         </button>
       </div>
       <div class="modal-body" >
+        <form method="post", id= 'SubmitField'>
         {{ render_form_row(form, row_class='form-group row', col_class_default="col-sm-5 col-form-label") }}
+        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">返回</button>
-        <button form="registFrom" type="submit" class="btn btn-primary">提交</button>
+        <button form="SubmitField" type="submit" class="btn btn-primary">提交</button>
       </div>
     </div>
   </div>
