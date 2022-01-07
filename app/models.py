@@ -1,61 +1,42 @@
-from werkzeug.security import generate_password_hash, check_password_hash
+import datetime
+from enum import unique
 from . import db
-from flask_login import UserMixin
-from . import login_manger
-from datetime import datetime
 
-class Role(db.Model):
-    __tablename__ = 'roles'
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(64), unique=True)
-    users = db.relationship('User', backref='role', lazy='dynamic')
-
-    def __repr__(self):
-        return '<Role %r>' % self.name
-
-class User(UserMixin, db.Model):
+class User(db.Model):
     __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(64), unique=True, index=True)
-    username = db.Column(db.String(64), unique=True, index=True)
-    password_hash = db.Column(db.String(128))
-    role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
-    bills = db.relationship('Bill', backref='user', lazy='dynamic')
+    # 创建必要字段
+    """TO-DO 后续增加邮箱和密码字段"""
+    id = db.Column(db.Integer, primary_key=True) # id，自增
+    username = db.Column(db.String(64), unique=False, index=True) # 用户名
+    books = db.relationship('Book', backref='user', lazy='dynamic')
     
-
-    def __repr__(self):
+    def __repr__(self) -> str:
         return '<User %r>' % self.username
 
-    @property # 装饰器，对参数进行必要的检查
-    def password(self):
-        raise AttributeError("不可直接访问密码")
+class Book(db.Model):
+    """账本模型"""
+    ####### 字段说明 #######
+    # id[主键]: int, 唯一 自增
+    # user_id[用户id]: int 非空
+    # timestart[发生日期]: datetime 非空
+    # amount[金额]: float, 最大2位小数, 非空
+    # direction[方向]: bool, true 为收入，false 非空
+    # account_book[账本]: 非空
+    # tag[标签]: 非空
+    # remark： str 长字符串
+    # timecreate[创建时间]: datetime
 
-    @password.setter
-    def password(self, password):
-        self.password_hash = generate_password_hash(password)
-
-    def verify_password(self, password):
-        """与存储在 User 模型中的密码散列值进行比对。如果这个方法返回 True，表明密码是正确的
-        """
-        return check_password_hash(self.password_hash, password)
-
-class Bill(db.Model):
-    __tablename__ = 'bill'
+    """TO-DO 增加坐标"""
+    __tablename__ = 'books'
     id = db.Column(db.Integer, primary_key=True)
-    accounting_time = db.Column(db.Date(), nullable=False) # 记账时间，不允许出现空值
-    payment_method = db.Column(db.String(64), nullable=False) # 支付方式, 
-    direction = db.Column(db.String(64), nullable=False) # 发生方向
-    amount = db.Column(db.Float(), nullable=False) # 金额, 浮点数
-    category = db.Column(db.String(64), nullable=False) # 分类
-    label = db.Column(db.String(64), nullable=True) # 标签，一组字符串
-    ledger = db.Column(db.String(64), nullable=False) # 账本
-    remark = db.Column(db.Text(), nullable=True) # 备注 长字符串
-    users = db.Column(db.Integer, db.ForeignKey('users.id')) # 用户id
-    creation_time = db.Column(db.DateTime(), default=datetime.utcnow()) # 创建时间
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    timestart = db.Column(db.Date, index=True, default=datetime.date.today)
+    amount = db.Column(db.Float, unique=False)
+    direction = db.Column(db.Boolean, unique=False)
+    account_book = db.Column(db.String(64), unique=False)
+    tag = db.Column(db.Text, unique=False)
+    remark = db.Column(db.Text, unique=True)
+    timecreate = db.Column(db.DateTime, default=datetime.datetime.now)
 
-    def __repr__(self):
-        return '<Bill %r>' % self.users
-
-@login_manger.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+    def __repr__(self) -> str:
+        return '<Book %r>' % self.id
