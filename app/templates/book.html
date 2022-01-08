@@ -15,6 +15,12 @@
             <td>{%if book.direction==True%}收入{%else%}支出{%endif%}</td>
             <td>{{book.tag}}</td>
             <td>{{book.remark}}</td>
+            <td>
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <a type="button" class="btn btn-secondary" href="{{url_for('.edit_item', id=book.id)}}">修改</a>
+                <a type="button" class="btn btn-secondary" href="{{url_for('.del_item', id=book.id)}}">删除</a>
+              </div>
+            </td>
         </tr>
     {% endfor %}
   </tbody>
