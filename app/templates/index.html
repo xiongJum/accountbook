@@ -2,6 +2,34 @@
 
 {% block title %}仪表盘{% endblock %}
 {% block page_content %}
-<p> Hello, World!</p>
+
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">总金额</h1>
+    <p class="lead">{{amount['total_amount'][0]}}</p>
+  </div>
+</div>
+<div class="card" style="width: 18rem;">
+  <div class="card-header">
+    今年,收入{{amount['this']['year'][0]}}
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">今天,收入{{amount['total_today_amount'][0]}}</li>
+    <li class="list-group-item">昨天,收入</li>
+    <li class="list-group-item">本月,收入{{amount['total_month_amount'][0]}}</li>
+    <li class="list-group-item">上月,收入{{amount['last']['month'][0]}}</li>
+  </ul>
+</div>
+
+<div class="card" style="width: 18rem;">
+  <div class="card-header">
+    去年
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">去年今天，收入{{amount['ony']['day'][0]}}</li>
+    <li class="list-group-item">去年本月,收入{{amount['ony']['month'][0]}}</li>
+  </ul>
+</div>
+
 {% endblock %}
 

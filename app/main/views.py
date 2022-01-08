@@ -4,11 +4,14 @@ from . import main
 from . forms import WriteForm, EditItemsForm
 from .. import db
 from ..models import Book
+from ..select_data import amountDataPoint
 
 
 @main.route('/', methods=["GET", "POST"])
 def index():
-    return render_template('index.html')
+    amount = amountDataPoint()
+
+    return render_template('index.html', amount=amount)
 
 @main.route('/write/<directions>', methods=["GET", "POST"])
 def write(directions):
