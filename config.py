@@ -14,6 +14,7 @@ class Config:
     FLASKY_MAIL_SENDER = 'Flasky Admin <xiongjum121@163.com>' # 发件人
     FLASKY_ADMIN = os.environ.get('FLASKY_ADMIN') # 管理员
     SQLALCHEMY_TRACK_MODIFICATIONS = False # 跟踪修改 SQLALCHEMY
+    FLASKY_COMMENTS_PER_PAGE = 15
 
     @staticmethod
     def init_app(app):

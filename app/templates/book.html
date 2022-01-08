@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% import "_pages.html" as pages %}
+{% block title %}账本{% endblock %}
+
+{% block page_content %}
+<h4 id="comments">账本</h4>
+
+<table class="table">
+  <tbody>
+    {% for book in books %}
+            <tr>
+            <th scope="row">1</th>
+            <td>{{book.timestart}}</td>
+            <td>{{book.amount}}</td>
+            <td>{%if book.direction==True%}收入{%else%}支出{%endif%}</td>
+            <td>{{book.tag}}</td>
+            <td>{{book.remark}}</td>
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="pagination">
+    {{ pages.pagination_widget(pagination, '.book') }}
+</div>
+
+{% endblock %}

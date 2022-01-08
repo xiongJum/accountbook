@@ -32,10 +32,10 @@ class Book(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     timestart = db.Column(db.Date, index=True, default=datetime.date.today)
     amount = db.Column(db.Float, unique=False)
-    direction = db.Column(db.Boolean, unique=False)
-    account_book = db.Column(db.String(64), unique=False)
-    tag = db.Column(db.Text, unique=False)
-    remark = db.Column(db.Text, unique=True)
+    direction = db.Column(db.Boolean, unique=False,nullable=False)
+    account_book = db.Column(db.String(64), unique=False, nullable=False)
+    tag = db.Column(db.Text, unique=False, nullable=False)
+    remark = db.Column(db.Text, unique=False)
     timecreate = db.Column(db.DateTime, default=datetime.datetime.now)
 
     def __repr__(self) -> str:

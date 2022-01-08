@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 {% from 'bootstrap/form.html' import render_form %}
 
-{% block title %}Flasky - 登录{% endblock %}
+{% block title %}记账{% endblock %}
 
 {% block page_content %}
+
 <div class="page-header">
-    <h1>支出</h1>
+    <h1>{% if directions == 'pay' %}支出{% else %}收入{% endif %}</h1>
 </div>
 <div class="col-md-4">
     {{ render_form(form) }}
